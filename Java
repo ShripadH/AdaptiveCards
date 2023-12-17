@@ -1,0 +1,23 @@
+import com.microsoft.bot.builder.*;
+import com.microsoft.bot.builder.adaptivecards.*;
+import com.microsoft.bot.connector.authentication.*;
+import org.springframework.stereotype.Component;
+
+@Component
+public class AdaptiveCardBot extends ActivityHandler {
+    @Override
+    protected CompletableFuture<Void> onMessageActivity(final TurnContext turnContext) {
+        final AdaptiveCard card = new AdaptiveCard();
+        card.setBody(Arrays.asList(
+                new TextBlock("Hello, World!"),
+                new Image("https://adaptivecards.io/content/adaptive-card-50.png")
+        ));
+
+        final Attachment attachment = new Attachment();
+        attachment.setContentType("application/vnd.microsoft.card.adaptive");
+        attachment.setContent(card);
+
+        final Activity reply = MessageFactory.attachment(attachment);
+        return turnContext.sendActivity(reply);
+    }
+}
